@@ -12,6 +12,8 @@ import (
 	"github.com/ftl/hamradio/locator"
 )
 
+const TimestampLayout = "2006-01-02 1504"
+
 func NewLog() *Log {
 	return &Log{
 		Custom:      make(map[Tag]string),
@@ -54,38 +56,38 @@ func (t Tag) IsCustom() bool {
 }
 
 const (
-	StartOfLogTag          Tag = "START-OF-LOG"
-	EndOfLogTag            Tag = "END-OF-LOG"
-	CallsignTag            Tag = "CALLSIGN"
-	ContestTag             Tag = "CONTEST"
-	CategoryAssistedTag    Tag = "CATEGORY-ASSISTED"
-	CategoryBandTag        Tag = "CATEGORY-BAND"
-	CategoryModeTag        Tag = "CATEGORY-MODE"
-	CategoryOperatorTag    Tag = "CATEGORY-OPERATOR"
-	CategoryPowerTag       Tag = "CATEGORY-POWER"
-	CategoryStationTag     Tag = "CATEGORY-STATION"
-	CategoryTimeTag        Tag = "CATEGORY-TIME"
-	CategoryTransmitterTag Tag = "CATEGORY-TRANSMITTER"
-	CategoryOverlayTag     Tag = "CATEGORY-OVERLAY"
-	CertificateTag         Tag = "CERTIFICATE"
-	ClaimedScoreTag        Tag = "CLAIMED-SCORE"
-	ClubTag                Tag = "CLUB"
-	CratedByTag            Tag = "CREATED-BY"
-	EmailTag               Tag = "EMAIL"
-	GridLocatorTag         Tag = "GRID-LOCATOR"
-	LocationTag            Tag = "LOCATION"
-	NameTag                Tag = "NAME"
-	AddressTag             Tag = "ADDRESS"
-	AddressCityTag         Tag = "ADDRESS-CITY"
-	AddressStateProviceTag Tag = "ADDRESS-STATE-PROVINCE"
-	AddressPostalcodeTag   Tag = "ADDRESS-POSTALCODE"
-	AddressCountryTag      Tag = "ADDRESS-COUNTRY"
-	OperatorsTag           Tag = "OPERATORS"
-	OfftimeTag             Tag = "OFFTIME"
-	SoapboxTag             Tag = "SOAPBOX"
-	QSOTag                 Tag = "QSO"
-	XQSOTag                Tag = "X-QSO"
-	XPrefix                    = "X-"
+	StartOfLogTag           Tag = "START-OF-LOG"
+	EndOfLogTag             Tag = "END-OF-LOG"
+	CallsignTag             Tag = "CALLSIGN"
+	ContestTag              Tag = "CONTEST"
+	CategoryAssistedTag     Tag = "CATEGORY-ASSISTED"
+	CategoryBandTag         Tag = "CATEGORY-BAND"
+	CategoryModeTag         Tag = "CATEGORY-MODE"
+	CategoryOperatorTag     Tag = "CATEGORY-OPERATOR"
+	CategoryPowerTag        Tag = "CATEGORY-POWER"
+	CategoryStationTag      Tag = "CATEGORY-STATION"
+	CategoryTimeTag         Tag = "CATEGORY-TIME"
+	CategoryTransmitterTag  Tag = "CATEGORY-TRANSMITTER"
+	CategoryOverlayTag      Tag = "CATEGORY-OVERLAY"
+	CertificateTag          Tag = "CERTIFICATE"
+	ClaimedScoreTag         Tag = "CLAIMED-SCORE"
+	ClubTag                 Tag = "CLUB"
+	CreatedByTag            Tag = "CREATED-BY"
+	EmailTag                Tag = "EMAIL"
+	GridLocatorTag          Tag = "GRID-LOCATOR"
+	LocationTag             Tag = "LOCATION"
+	NameTag                 Tag = "NAME"
+	AddressTag              Tag = "ADDRESS"
+	AddressCityTag          Tag = "ADDRESS-CITY"
+	AddressStateProvinceTag Tag = "ADDRESS-STATE-PROVINCE"
+	AddressPostalcodeTag    Tag = "ADDRESS-POSTALCODE"
+	AddressCountryTag       Tag = "ADDRESS-COUNTRY"
+	OperatorsTag            Tag = "OPERATORS"
+	OfftimeTag              Tag = "OFFTIME"
+	SoapboxTag              Tag = "SOAPBOX"
+	QSOTag                  Tag = "QSO"
+	XQSOTag                 Tag = "X-QSO"
+	XPrefix                     = "X-"
 )
 
 type ContestIdentifier string
@@ -276,31 +278,68 @@ func (f QSOFrequency) ToBand() CategoryBand {
 	if f.IsFrequency() {
 		kHz := f.ToKilohertz()
 		switch {
-		case kHz < 3500:
+		case kHz < 3_500:
 			return Band160m
-		case kHz < 7000:
+		case kHz < 7_000:
 			return Band80m
-		case kHz < 14000:
+		case kHz < 14_000:
 			return Band40m
-		case kHz < 21000:
+		case kHz < 21_000:
 			return Band20m
-		case kHz < 28000:
+		case kHz < 28_000:
 			return Band15m
-		default:
+		case kHz < 50_000_000:
 			return Band10m
+		case kHz < 70_000_000:
+			return Band6m
+		case kHz < 144_000_000:
+			return Band4m
+		case kHz < 222_000_000:
+			return Band2m
+		case kHz < 430_000_000:
+			return Band222
+		case kHz < 900_000_000:
+			return Band432
+		case kHz < 1_200_000_000:
+			return Band902
+		case kHz < 2_300_000_000:
+			return Band1_2G
+		default:
+			return Band2_3G
 		}
 	}
 	switch f {
-	case "50":
+	case Frequency50MHz:
 		return Band6m
-	case "70":
+	case Frequency70MHz:
 		return Band4m
-	case "144":
+	case Frequency144MHz:
 		return Band2m
 	default:
 		return CategoryBand(strings.ToUpper(string(f)))
 	}
 }
+
+const (
+	Frequency50MHz  QSOFrequency = "50"
+	Frequency70MHz  QSOFrequency = "70"
+	Frequency144MHz QSOFrequency = "144"
+	Frequency222MHz QSOFrequency = "222"
+	Frequency432MHz QSOFrequency = "432"
+	Frequency902MHz QSOFrequency = "902"
+	Frequency1_2GHz QSOFrequency = "1.2G"
+	Frequency2_3GHz QSOFrequency = "2.3G"
+	Frequency3_4GHz QSOFrequency = "3.4G"
+	Frequency5_7GHz QSOFrequency = "5.7G"
+	Frequency10GHz  QSOFrequency = "10G"
+	Frequency24GHz  QSOFrequency = "24G"
+	Frequency47GHz  QSOFrequency = "47G"
+	Frequency75GHz  QSOFrequency = "75G"
+	Frequency122GHz QSOFrequency = "122G"
+	Frequency134GHz QSOFrequency = "134G"
+	Frequency241GHz QSOFrequency = "241G"
+	FrequencyLight  QSOFrequency = "LIGHT"
+)
 
 type QSOMode string
 
@@ -314,6 +353,5 @@ const (
 
 type QSOInfo struct {
 	Call     callsign.Callsign
-	RST      string
 	Exchange []string
 }

@@ -150,13 +150,11 @@ func TestParser_ParseAllTags(t *testing.T) {
 			Timestamp: time.Date(1999, time.March, 6, 7, 11, 0, 0, time.UTC),
 			Sent: QSOInfo{
 				Call:     callsign.MustParse("DL1ABC"),
-				RST:      "599",
-				Exchange: []string{"B01"},
+				Exchange: []string{"599", "B01"},
 			},
 			Received: QSOInfo{
 				Call:     callsign.MustParse("W1AW"),
-				RST:      "599",
-				Exchange: []string{"001"},
+				Exchange: []string{"599", "001"},
 			},
 		},
 	}, actualLog.QSOData, "qso data")
@@ -167,13 +165,11 @@ func TestParser_ParseAllTags(t *testing.T) {
 			Timestamp: time.Date(1999, time.March, 6, 7, 12, 0, 0, time.UTC),
 			Sent: QSOInfo{
 				Call:     callsign.MustParse("DL1ABC"),
-				RST:      "599",
-				Exchange: []string{"B01"},
+				Exchange: []string{"599", "B01"},
 			},
 			Received: QSOInfo{
 				Call:     callsign.MustParse("N5KO"),
-				RST:      "599",
-				Exchange: []string{"001"},
+				Exchange: []string{"599", "001"},
 			},
 			Transmitter: 1,
 		},
@@ -314,13 +310,11 @@ func TestParseQSO(t *testing.T) {
 				Timestamp: time.Date(1999, time.March, 6, 7, 11, 0, 0, time.UTC),
 				Sent: QSOInfo{
 					Call:     callsign.MustParse("HC8N"),
-					RST:      "59",
-					Exchange: []string{"700"},
+					Exchange: []string{"59", "700"},
 				},
 				Received: QSOInfo{
 					Call:     callsign.MustParse("W1AW"),
-					RST:      "59",
-					Exchange: []string{"CT"},
+					Exchange: []string{"59", "CT"},
 				},
 			},
 		},
@@ -333,13 +327,11 @@ func TestParseQSO(t *testing.T) {
 				Timestamp: time.Date(1999, time.March, 6, 7, 11, 0, 0, time.UTC),
 				Sent: QSOInfo{
 					Call:     callsign.MustParse("HC8N"),
-					RST:      "59",
-					Exchange: []string{"700"},
+					Exchange: []string{"59", "700"},
 				},
 				Received: QSOInfo{
 					Call:     callsign.MustParse("W1AW"),
-					RST:      "59",
-					Exchange: []string{"CT"},
+					Exchange: []string{"59", "CT"},
 				},
 				Transmitter: 1,
 			},

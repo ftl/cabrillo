@@ -208,7 +208,7 @@ var tagParsers = map[Tag]tagParser{
 		log.Club = value
 		return nil
 	}),
-	CratedByTag: tagParserFunc(func(log *Log, value string) error {
+	CreatedByTag: tagParserFunc(func(log *Log, value string) error {
 		log.CreatedBy = value
 		return nil
 	}),
@@ -243,7 +243,7 @@ var tagParsers = map[Tag]tagParser{
 		log.Address.City = value
 		return nil
 	}),
-	AddressStateProviceTag: tagParserFunc(func(log *Log, value string) error {
+	AddressStateProvinceTag: tagParserFunc(func(log *Log, value string) error {
 		log.Address.StateProvince = value
 		return nil
 	}),
@@ -329,8 +329,7 @@ var tagParsers = map[Tag]tagParser{
 }
 
 func ParseTimestamp(s string) (time.Time, error) {
-	const timestampLayout = "2006-01-02 1504"
-	return time.Parse(timestampLayout, s)
+	return time.Parse(TimestampLayout, s)
 }
 
 func ParseQSO(s string) (QSO, error) {
@@ -390,8 +389,7 @@ func parseQSOInfo(columns []string) (QSOInfo, error) {
 	if err != nil {
 		return QSOInfo{}, err
 	}
-	result.RST = columns[1]
-	result.Exchange = append([]string{}, columns[2:]...)
+	result.Exchange = append([]string{}, columns[1:]...)
 
 	return result, nil
 }
