@@ -23,8 +23,8 @@ func NewLog() *Log {
 	return &Log{
 		CabrilloVersion: Version3,
 		Custom:          make(map[Tag]string),
-		QSOData:         make([]QSO, 0, 2000),
-		IgnoredQSOs:     make([]QSO, 0, 2000),
+		QSOData:         []QSO{},
+		IgnoredQSOs:     []QSO{},
 	}
 }
 
