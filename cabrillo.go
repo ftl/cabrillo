@@ -14,11 +14,17 @@ import (
 
 const TimestampLayout = "2006-01-02 1504"
 
+const (
+	Version2 = "2.0"
+	Version3 = "3.0"
+)
+
 func NewLog() *Log {
 	return &Log{
-		Custom:      make(map[Tag]string),
-		QSOData:     make([]QSO, 0, 2000),
-		IgnoredQSOs: make([]QSO, 0, 2000),
+		CabrilloVersion: Version3,
+		Custom:          make(map[Tag]string),
+		QSOData:         make([]QSO, 0, 2000),
+		IgnoredQSOs:     make([]QSO, 0, 2000),
 	}
 }
 
