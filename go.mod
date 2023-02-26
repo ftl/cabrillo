@@ -3,8 +3,8 @@ module github.com/ftl/cabrillo
 go 1.19
 
 require (
-	github.com/ftl/hamradio v0.2.5
-	github.com/stretchr/testify v1.8.1
+	github.com/ftl/hamradio v0.2.6
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
