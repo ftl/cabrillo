@@ -160,7 +160,8 @@ func (r row) Write(w io.Writer) error {
 	if r.ommitIfEmpty && r.value == "" {
 		return nil
 	}
-	_, err := fmt.Fprintf(w, "%s: %s\n", r.tag, r.value)
+	line := strings.TrimSpace(fmt.Sprintf("%s: %s", r.tag, r.value))
+	_, err := fmt.Fprintf(w, "%s\n", line)
 	return err
 }
 
