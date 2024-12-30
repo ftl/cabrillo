@@ -156,12 +156,15 @@ type row struct {
 	ommitIfEmpty bool
 }
 
+func (r row) String() string {
+	return strings.TrimSpace(fmt.Sprintf("%s: %s", r.tag, r.value))
+}
+
 func (r row) Write(w io.Writer) error {
 	if r.ommitIfEmpty && r.value == "" {
 		return nil
 	}
-	line := strings.TrimSpace(fmt.Sprintf("%s: %s", r.tag, r.value))
-	_, err := fmt.Fprintf(w, "%s\n", line)
+	_, err := fmt.Fprintf(w, "%s\n", r.String())
 	return err
 }
 
@@ -227,15 +230,17 @@ func soapboxRows(l *Log, ommitIfEmpty bool) []row {
 
 func wrapRows(tag Tag, value string, ommitIfEmpty bool) []row {
 	const maxLength = 75
-	result := make([]row, 0, (len(value)/maxLength)+1)
-
-	for len(value) > maxLength {
-		wrapIndex := strings.LastIndexAny(value[:maxLength], " \n\t")
+	maxValueLength := maxLength - len(tag) - 2 // tag + colon + space
+	result := make([]row, 0, (len(value)/maxValueLength)+1)
+	for len(value) > maxValueLength {
+		wrapIndex := strings.LastIndexAny(value[:maxValueLength], " \n\t")
+		offset := 1
 		if wrapIndex == -1 {
-			wrapIndex = maxLength - 1
+			wrapIndex = maxValueLength
+			offset = 0
 		}
-		result = append(result, row{tag, value[:wrapIndex+1], ommitIfEmpty})
-		value = value[wrapIndex+1:]
+		result = append(result, row{tag, value[:wrapIndex], ommitIfEmpty})
+		value = value[wrapIndex+offset:]
 	}
 	result = append(result, row{tag, value, ommitIfEmpty})
 	return result

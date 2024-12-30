@@ -44,3 +44,55 @@ func TestTestdataRoundtrip(t *testing.T) {
 		})
 	}
 }
+
+func TestWrapRows(t *testing.T) {
+	tests := []struct {
+		name     string
+		tag      Tag
+		value    string
+		expected []string
+	}{
+		{
+			name:     "empty",
+			tag:      SoapboxTag,
+			value:    "",
+			expected: []string{"SOAPBOX:"},
+		},
+		{
+			name:     "short",
+			tag:      SoapboxTag,
+			value:    "1234567890",
+			expected: []string{"SOAPBOX: 1234567890"},
+		},
+		{
+			name:  "long without whitespace",
+			tag:   SoapboxTag,
+			value: "12345678901234567890123456789012345678901234567890123456789012345678901234567890",
+			expected: []string{
+				"SOAPBOX: 123456789012345678901234567890123456789012345678901234567890123456",
+				"SOAPBOX: 78901234567890",
+			},
+		},
+		{
+			name:  "long with whitespace",
+			tag:   SoapboxTag,
+			value: "123456789 123456789 123456789 123456789 123456789 123456789 123456789 1234567890",
+			expected: []string{
+				"SOAPBOX: 123456789 123456789 123456789 123456789 123456789 123456789",
+				"SOAPBOX: 123456789 1234567890",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := wrapRows(tt.tag, tt.value, true)
+			require.Equal(t, len(tt.expected), len(actual))
+			for i, row := range actual {
+				line := row.String()
+				assert.True(t, len(line) <= 75, "len %d: %s = %d", i, line, len(line))
+				assert.Equal(t, tt.expected[i], line)
+			}
+		})
+	}
+}
