@@ -90,6 +90,7 @@ const (
 	AddressCountryTag       Tag = "ADDRESS-COUNTRY"
 	OperatorsTag            Tag = "OPERATORS"
 	OfftimeTag              Tag = "OFFTIME"
+	SpecificTag             Tag = "SPECIFIC"
 	SoapboxTag              Tag = "SOAPBOX"
 	QSOTag                  Tag = "QSO"
 	XQSOTag                 Tag = "X-QSO"
@@ -235,6 +236,7 @@ const (
 	YouthOverlay      CategoryOverlay = "YOUTH"
 	NoviceTechOverlay CategoryOverlay = "NOVICE-TECH"
 	Over50Overlay     CategoryOverlay = "OVER-50"
+	YLOverlay         CategoryOverlay = "YL"
 )
 
 type Address struct {
