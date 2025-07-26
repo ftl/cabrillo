@@ -1,6 +1,6 @@
 module github.com/ftl/cabrillo
 
-go 1.19
+go 1.24.3
 
 require (
 	github.com/ftl/hamradio v0.2.12
