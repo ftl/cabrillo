@@ -318,6 +318,14 @@ var tagParsers = map[Tag]tagParser{
 		log.QSOData = append(log.QSOData, qso)
 		return nil
 	}),
+	QTCTag: tagParserFunc(func(log *Log, value string) error {
+		qtc, err := ParseQTC(value)
+		if err != nil {
+			return err
+		}
+		log.QTCData = append(log.QTCData, qtc)
+		return nil
+	}),
 	XQSOTag: tagParserFunc(func(log *Log, value string) error {
 		qso, err := ParseQSO(value)
 		if err != nil {
@@ -390,6 +398,47 @@ func parseQSOInfo(columns []string) (QSOInfo, error) {
 		return QSOInfo{}, err
 	}
 	result.Exchange = append([]string{}, columns[1:]...)
+
+	return result, nil
+}
+
+func ParseQTC(s string) (QTC, error) {
+	columns := qsoColumnSeparator.Split(s, -1)
+	if len(columns) < 10 {
+		return QTC{}, fmt.Errorf("not enough QTC columns: %d", len(columns))
+	}
+
+	timestamp, err := ParseTimestamp(columns[2] + " " + columns[3])
+	if err != nil {
+		return QTC{}, err
+	}
+	rxCall, err := callsign.Parse(columns[4])
+	if err != nil {
+		return QTC{}, err
+	}
+	txCall, err := callsign.Parse(columns[6])
+	if err != nil {
+		return QTC{}, err
+	}
+	qtcCall, err := callsign.Parse(columns[8])
+	if err != nil {
+		return QTC{}, err
+	}
+	qtcNumber, err := strconv.Atoi(columns[9])
+	if err != nil {
+		return QTC{}, err
+	}
+
+	var result QTC
+	result.Frequency = QSOFrequency(columns[0])
+	result.Mode = QSOMode(columns[1])
+	result.Timestamp = timestamp
+	result.RxCall = rxCall
+	result.QTCHeader = QTCHeader(columns[5])
+	result.TxCall = txCall
+	result.QTCTime = QTCTime(columns[7])
+	result.QTCCall = qtcCall
+	result.QTCNumber = QTCNumber(qtcNumber)
 
 	return result, nil
 }

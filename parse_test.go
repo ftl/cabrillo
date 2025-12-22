@@ -100,6 +100,7 @@ func TestParser_ParseAllTags(t *testing.T) {
 		"SOAPBOX: With an extra line and an empty line in between.",
 		"QSO:  3559 CW 1999-03-06 0711 DL1ABC           599 B01    W1AW           599 001     0",
 		"X-QSO:  3559 CW 1999-03-06 0712 DL1ABC           599 B01    N5KO           599 001     1",
+		"QTC: 21011 CW 2024-08-10 1028 DL1ABC 7/10 K5XYZ 1332 S59XYZ 112",
 		"X-CUSTOM: this is content in a custom tag",
 		"END-OF-LOG:",
 	}
@@ -174,6 +175,19 @@ func TestParser_ParseAllTags(t *testing.T) {
 			Transmitter: 1,
 		},
 	}, actualLog.IgnoredQSOs, "ignored qsos")
+	assert.Equal(t, []QTC{
+		{
+			Frequency: QSOFrequency("21011"),
+			Mode:      QSOModeCW,
+			Timestamp: time.Date(2024, time.August, 10, 10, 28, 0, 0, time.UTC),
+			RxCall:    callsign.MustParse("DL1ABC"),
+			QTCHeader: QTCHeader("7/10"),
+			TxCall:    callsign.MustParse("K5XYZ"),
+			QTCTime:   "1332",
+			QTCCall:   callsign.MustParse("S59XYZ"),
+			QTCNumber: QTCNumber(112),
+		},
+	}, actualLog.QTCData, "qtc data")
 }
 
 func TestParseOperators(t *testing.T) {

@@ -25,6 +25,7 @@ func NewLog() *Log {
 		Custom:          make(map[Tag]string),
 		QSOData:         []QSO{},
 		IgnoredQSOs:     []QSO{},
+		QTCData:         []QTC{},
 	}
 }
 
@@ -50,6 +51,7 @@ type Log struct {
 	Custom          map[Tag]string
 	QSOData         []QSO
 	IgnoredQSOs     []QSO
+	QTCData         []QTC
 }
 
 type Tag string
@@ -93,6 +95,7 @@ const (
 	SpecificTag             Tag = "SPECIFIC"
 	SoapboxTag              Tag = "SOAPBOX"
 	QSOTag                  Tag = "QSO"
+	QTCTag                  Tag = "QTC"
 	XQSOTag                 Tag = "X-QSO"
 	XPrefix                     = "X-"
 )
@@ -363,3 +366,21 @@ type QSOInfo struct {
 	Call     callsign.Callsign
 	Exchange []string
 }
+
+type QTC struct {
+	Frequency QSOFrequency
+	Mode      QSOMode
+	Timestamp time.Time
+	RxCall    callsign.Callsign
+	QTCHeader QTCHeader
+	TxCall    callsign.Callsign
+	QTCTime   QTCTime
+	QTCCall   callsign.Callsign
+	QTCNumber QTCNumber
+}
+
+type QTCHeader string
+
+type QTCTime string
+
+type QTCNumber int

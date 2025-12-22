@@ -60,6 +60,11 @@ func WriteWithTags(w io.Writer, l *Log, appendTX bool, ommitIfEmpty bool, tags .
 		return err
 	}
 
+	err = writeQTCs(w, QTCTag, l.QTCData)
+	if err != nil {
+		return err
+	}
+
 	err = writeRows(w, row{EndOfLogTag, "", false})
 	return err
 }
@@ -275,6 +280,38 @@ func writeQSO(w io.Writer, tag Tag, data QSO, appendTX bool) error {
 		if err != nil {
 			return err
 		}
+	}
+	_, err = fmt.Fprintln(w)
+	return err
+}
+
+func writeQTCs(w io.Writer, tag Tag, data []QTC) error {
+	for _, qtc := range data {
+		err := writeQTC(w, tag, qtc)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func writeQTC(w io.Writer, tag Tag, data QTC) error {
+	// #    QRG(7) MODE(4) DATE(12) TIME(6) CALL-RX(10) QTC-GRP(5) CALL-TX(9) TIME-QSO(6) CALL-QSO(8) NR-QSO(3)
+	// QTC: 21011   CW   2024-08-10   1028   DL1XYZ     7/10  K5XYZ     1332   S59XYZ   112
+	_, err := fmt.Fprintf(w, "%s: %s %s %s %s %s %s %s %s %03d",
+		tag,
+		data.Frequency,
+		data.Mode,
+		formatTimestamp(data.Timestamp),
+		data.RxCall.String(),
+		data.QTCHeader,
+		data.TxCall.String(),
+		data.QTCTime,
+		data.QTCCall,
+		data.QTCNumber,
+	)
+	if err != nil {
+		return err
 	}
 	_, err = fmt.Fprintln(w)
 	return err
