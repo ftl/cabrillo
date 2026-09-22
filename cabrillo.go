@@ -236,6 +236,7 @@ const (
 	ClassicOverlay    CategoryOverlay = "CLASSIC"
 	RookieOverlay     CategoryOverlay = "ROOKIE"
 	TBWiresOverlay    CategoryOverlay = "TB-WIRES"
+	WireOnlyOverlay   CategoryOverlay = "WIRE-ONLY"
 	YouthOverlay      CategoryOverlay = "YOUTH"
 	NoviceTechOverlay CategoryOverlay = "NOVICE-TECH"
 	Over50Overlay     CategoryOverlay = "OVER-50"
