@@ -233,14 +233,20 @@ const (
 type CategoryOverlay string
 
 const (
-	ClassicOverlay    CategoryOverlay = "CLASSIC"
-	RookieOverlay     CategoryOverlay = "ROOKIE"
-	TBWiresOverlay    CategoryOverlay = "TB-WIRES"
-	WireOnlyOverlay   CategoryOverlay = "WIRE-ONLY"
-	YouthOverlay      CategoryOverlay = "YOUTH"
-	NoviceTechOverlay CategoryOverlay = "NOVICE-TECH"
-	Over50Overlay     CategoryOverlay = "OVER-50"
-	YLOverlay         CategoryOverlay = "YL"
+	ClassicOverlay       CategoryOverlay = "CLASSIC"
+	RookieOverlay        CategoryOverlay = "ROOKIE"
+	TBWiresOverlay       CategoryOverlay = "TB-WIRES"
+	WireOnlyOverlay      CategoryOverlay = "WIRE-ONLY"
+	YouthOverlay         CategoryOverlay = "YOUTH"
+	NoviceTechOverlay    CategoryOverlay = "NOVICE-TECH"
+	Over50Overlay        CategoryOverlay = "OVER-50"
+	YLOverlay            CategoryOverlay = "YL"
+	YNOverlay            CategoryOverlay = "YN"
+	TeenOverlay          CategoryOverlay = "TEEN"
+	NewcomerOverlay      CategoryOverlay = "NEWCOMER"
+	DXpeditionOverlay    CategoryOverlay = "DXPEDITION"
+	SingleElementOverlay CategoryOverlay = "SINGLE-ELEMENT"
+	TwelveHourOverlay    CategoryOverlay = "12-HOUR"
 )
 
 type Address struct {
